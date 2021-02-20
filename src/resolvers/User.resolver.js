@@ -1,4 +1,5 @@
 const User = require("../models/User.model")
+const jwt = require("jsonwebtoken")
 module.exports = {
   Query: {
     users: async () => {
@@ -6,6 +7,12 @@ module.exports = {
     },
     user: async (_parent, { id }, _ctx, _info) => {
       return await User.findById(id)
+    },
+    me: async (_parent, _args, { user }, _info) => {
+      if (!user) {
+        throw new Error("Not logged in")
+      }
+      return user
     }
   },
   Mutation: {
@@ -26,6 +33,21 @@ module.exports = {
         }
       })
       return user
+    },
+    login: async (_p, { username, password }) => {
+      const user = await User.findOne({ username })
+
+      if (!user) {
+        throw new Error("No user with that username")
+      }
+
+      // @ts-ignore
+      const valid = user.password === password
+      if (!valid) {
+        throw new Error("Incorrect password")
+      }
+
+      return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1d" })
     }
   }
 }

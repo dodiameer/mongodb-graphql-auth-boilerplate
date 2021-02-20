@@ -3,11 +3,13 @@ module.exports = gql`
 type Query {
   hello(name: String): String!
   users: [User]!
-  user(id: ID!): User
+  user(id: ID!): User,
+  me: User
 }
 
 type Mutation {
   createUser(input: CreateUserInput): User
+  login(username: String!, password: String!): String!
 }
 
 input CreateUserInput {
