@@ -49,6 +49,18 @@ module.exports = {
       }
 
       return jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1d" })
+    },
+    deleteUser: async (_parent, _args, { user }, _info) => {
+      if (!user) {
+        throw new Error("Not logged in")
+      }
+      try {
+        await user.delete()
+        return true
+      }
+      catch {
+        return false
+      }
     }
   }
 }

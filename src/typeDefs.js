@@ -10,6 +10,7 @@ type Query {
 type Mutation {
   createUser(input: CreateUserInput): User
   login(username: String!, password: String!): String!
+  deleteUser: Boolean!
 }
 
 input CreateUserInput {
