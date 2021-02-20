@@ -11,6 +11,7 @@ type Mutation {
   createUser(input: CreateUserInput): User
   login(username: String!, password: String!): String!
   deleteUser: Boolean!
+  updateUser(input: UpdateUserInput): User
 }
 
 input CreateUserInput {
@@ -18,6 +19,13 @@ input CreateUserInput {
   email: String!
   name: String!
   password: String!
+}
+
+input UpdateUserInput {
+  username: String
+  email: String
+  name: String
+  password: String
 }
 
 type User {

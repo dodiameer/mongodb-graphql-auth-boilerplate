@@ -61,6 +61,34 @@ module.exports = {
       catch {
         return false
       }
+    },
+    updateUser: async (_parent, { input }, { user }, _info) => {
+      if (!user) {
+        throw new Error("Not logged in")
+      }
+
+      let changed = false;
+      if (input.password) {
+        changed = true;
+        user.password = await argon2.hash(input.password)
+      }
+      if (input.username) {
+        changed = true;
+        user.username = input.username
+      }
+      if (input.email) {
+        changed = true;
+        user.email = input.email
+      }
+      if (input.name) {
+        changed = true;
+        user.name = input.name
+      }
+
+      if (changed) {
+        await user.save()
+      }
+      return user
     }
   }
 }
