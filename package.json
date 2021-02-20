@@ -5,6 +5,7 @@
   "license": "MIT",
   "dependencies": {
     "apollo-server-express": "^2.21.0",
+    "argon2": "^0.27.1",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "graphql": "^15.5.0",

@@ -1,5 +1,6 @@
 const User = require("../models/User.model")
 const jwt = require("jsonwebtoken")
+const argon2 = require("argon2")
 module.exports = {
   Query: {
     users: async () => {
@@ -21,7 +22,7 @@ module.exports = {
         username: input.username,
         email: input.email,
         name: input.name,
-        password: input.password
+        password: await argon2.hash(input.password)
       })
       await user.save().catch(e => {
         if (e.name === "ValidationError") {
@@ -42,7 +43,7 @@ module.exports = {
       }
 
       // @ts-ignore
-      const valid = user.password === password
+      const valid = await argon2.verify(user.password, password)
       if (!valid) {
         throw new Error("Incorrect password")
       }
